@@ -29,6 +29,7 @@ let allData = [];
 
 /*======= data fetching ======*/
 async function fetchMeals(query = "") {
+  itemsContainer.innerHTML = "<p class='text-center'>Loading...</p>";
   try {
     const res = await axios.get(
       `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
@@ -120,3 +121,4 @@ searchInput.addEventListener("input", e => {
 window.onload = () => {
   fetchMeals();
 };
+
