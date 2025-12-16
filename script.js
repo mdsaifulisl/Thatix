@@ -28,17 +28,19 @@ const modalText = document.querySelector(".view p");
 let allData = [];
 
 /*======= data fetching ======*/
-async function fetchMeals(query = "") {
+async function fetchMeals() {
   itemsContainer.innerHTML = "<p class='text-center'>Loading...</p>";
+
   try {
     const res = await axios.get(
-      `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
+      "https://www.themealdb.com/api/json/v1/1/search.php?s="
     );
 
     allData = res.data.meals || [];
     renderMeals(allData);
   } catch (error) {
     console.error(error);
+    itemsContainer.innerHTML = "<p class='text-center text-danger'>Failed to load data</p>";
   }
 }
 
@@ -114,11 +116,18 @@ closeBtn.addEventListener("click", () => {
 
 /*======= data search events ======*/
 searchInput.addEventListener("input", e => {
-  fetchMeals(e.target.value.trim());
+  const query = e.target.value.toLowerCase().trim();
+
+  const filteredData = allData.filter(meal =>
+    meal.strMeal.toLowerCase().includes(query)
+  );
+
+  renderMeals(filteredData);
 });
 
 /*======= data onload events ======*/
 window.onload = () => {
   fetchMeals();
 };
+
 
