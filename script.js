@@ -28,19 +28,53 @@ const modalText = document.querySelector(".view p");
 let allData = [];
 
 /*======= data fetching ======*/
+/*======= data fetching ======*/
 async function fetchMeals() {
   itemsContainer.innerHTML = "<p class='text-center'>Loading...</p>";
+  const apiUrl = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
 
+  /*
+  =====METHOD 1: Fetch API with then()=====
+
+  fetch(apiUrl)
+    .then((res) => {
+      return res.json(); 
+    })
+    .then((data) => {
+      console.log(data.meals);
+
+      allData = data.meals || [];
+      renderMeals(allData);
+    })
+    .catch((error) => {
+      console.error(error);
+      itemsContainer.innerHTML =
+        "<p class='text-center text-danger'>Failed to load data</p>";
+    });
+  */
+
+
+
+  /*
+  =======METHOD 2: Fetch API with async / await=======
+  const res = await fetch(apiUrl);
+  const data = await res.json();
+
+  console.log(data.meals);
+
+  allData = data.meals || [];
+  renderMeals(allData);
+  */
+
+  // METHOD 3: Axios with async / await (Currently Active)
   try {
-    const res = await axios.get(
-      "https://www.themealdb.com/api/json/v1/1/search.php?s="
-    );
-
+    const res = await axios.get(apiUrl);
     allData = res.data.meals || [];
     renderMeals(allData);
   } catch (error) {
     console.error(error);
-    itemsContainer.innerHTML = "<p class='text-center text-danger'>Failed to load data</p>";
+    itemsContainer.innerHTML =
+      "<p class='text-center text-danger'>Failed to load data</p>";
   }
 }
 
@@ -129,5 +163,6 @@ searchInput.addEventListener("input", e => {
 window.onload = () => {
   fetchMeals();
 };
+
 
 
